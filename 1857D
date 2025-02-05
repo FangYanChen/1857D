@@ -1,0 +1,42 @@
+import sys
+import math
+from typing import List, Tuple
+ 
+def main():
+    input = sys.stdin.read
+    data = input().split()
+    
+    idx = 0
+    t = int(data[idx])
+    idx += 1
+    
+    for _ in range(t):
+        n = int(data[idx])
+        idx += 1
+        
+        a = list(map(int, data[idx:idx + n]))
+        idx += n
+        
+        b = list(map(int, data[idx:idx + n]))
+        idx += n
+        
+        mx = -math.inf
+        ok = [False] * n
+        cnt = 0
+        
+        for i in range(n):
+            mx = max(mx, a[i] - b[i])
+        
+        for i in range(n):
+            if a[i] - b[i] >= mx:
+                cnt += 1
+                ok[i] = True
+        
+        print(cnt)
+        for i in range(n):
+            if ok[i]:
+                print(i + 1, end=' ')
+        print()
+ 
+if __name__ == "__main__":
+    main()
