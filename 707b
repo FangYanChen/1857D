@@ -1,0 +1,35 @@
+import sys
+
+class Edge:
+    def __init__(self, to, cost):
+        self.to = to
+        self.cost = cost
+
+n, m, k = map(int, sys.stdin.readline().split())
+
+
+adj = [[] for _ in range(n + 1)]
+
+for _ in range(m):
+    u, v, w = map(int, sys.stdin.readline().split())
+    adj[u].append(Edge(v, w))
+    adj[v].append(Edge(u, w))
+
+if k == 0:
+    print(-1)
+    sys.exit()
+
+storage = set(map(int, sys.stdin.readline().split()))
+
+min_cost = float('inf')
+
+for i in range(1, n + 1):
+    if i in storage and adj[i]:
+        for edge in adj[i]:
+            if edge.to not in storage and edge.cost < min_cost:
+                min_cost = edge.cost
+
+if min_cost != float('inf'):
+    print(min_cost)
+else:
+    print(-1)
