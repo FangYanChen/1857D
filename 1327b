@@ -1,0 +1,68 @@
+def solve():
+    n = int(input())
+    taken = [False] * (n + 1)  
+    daughter = []  
+    married_girl = 0 
+    mboy = 0 
+ 
+    for i in range(n):
+        j, *rest = map(int, input().split())
+        check = False
+        for temp in rest:
+            if not taken[temp] and not check:
+                taken[temp] = True
+                check = True
+                married_girl += 1
+                mboy += 1
+        if not check:
+            daughter.append(i + 1)  
+ 
+    if daughter:
+        for i in range(1, n + 1):
+            if not taken[i]:
+                print("IMPROVE")
+                print(daughter[0], i)
+                return
+    print("OPTIMAL")
+ 
+ 
+def main():
+    import sys
+    input = sys.stdin.read
+    data = input().split()
+    idx = 0
+    t = int(data[idx])
+    idx += 1
+    for _ in range(t):
+        n = int(data[idx])
+        idx += 1
+        daughters = []
+        for _ in range(n):
+            j = int(data[idx])
+            rest = list(map(int, data[idx + 1:idx + 1 + j]))
+            daughters.append(rest)
+            idx += 1 + j
+        taken = [False] * (n + 1)
+        unmarried_daughter = []
+        for i in range(n):
+            check = False
+            for temp in daughters[i]:
+                if not taken[temp] and not check:
+                    taken[temp] = True
+                    check = True
+            if not check:
+                unmarried_daughter.append(i + 1)
+        if unmarried_daughter:
+            for i in range(1, n + 1):
+                if not taken[i]:
+                    print("IMPROVE")
+                    print(unmarried_daughter[0], i)
+                    break
+            else:
+                print("OPTIMAL")
+        else:
+            print("OPTIMAL")
+ 
+ 
+if __name__ == "__main__":
+    main()
