@@ -1,0 +1,23 @@
+def build_graph(n):
+    graph = {i: set() for i in range(1, 5 + n)}
+    
+    for i in range(1, 4):
+        graph[i].add(i + 1)
+        graph[i + 1].add(i)
+    graph[4].add(1)
+    graph[1].add(4)
+    
+    for i in range(5, 5 + n):
+        min_degree_vertex = min(
+            (v for v in graph if v != i),
+            key=lambda v: len(graph[v])
+        )
+        graph[i].add(min_degree_vertex)
+        graph[min_degree_vertex].add(i)
+    
+    return graph
+
+n = int(input("How many vertices we'll add: "))
+graph = build_graph(n)
+for vertex, neighbors in graph.items():
+    print(f"{vertex}: {neighbors}")
