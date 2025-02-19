@@ -1,0 +1,62 @@
+import java.util.*;
+ 
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+ 
+        if (n % 2 != 0) {
+            System.out.println(-1);
+            return;
+        }
+ 
+        List<List<Integer>> v = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            v.add(new ArrayList<>());
+        }
+ 
+        for (int i = 0; i < n - 1; i++) {
+            int a = sc.nextInt();
+            int b = sc.nextInt();
+            v.get(a).add(b);
+            v.get(b).add(a);
+        }
+ 
+        int[] vis = new int[n + 1];
+        int[] parent = new int[n + 1];
+        Arrays.fill(parent, -1);
+        int evens = 0;
+        int[] size = new int[n + 1];
+        Arrays.fill(size, 1);
+ 
+        Stack<int[]> stack = new Stack<>();
+        stack.push(new int[]{1, -1});
+ 
+        while (!stack.isEmpty()) {
+            int[] current = stack.pop();
+            int u = current[0];
+            int p = current[1];
+ 
+            if (vis[u] == 0) {
+                vis[u] = 1;
+                stack.push(new int[]{u, p});
+                for (int nd : v.get(u)) {
+                    if (nd != p) {
+                        parent[nd] = u;
+                        stack.push(new int[]{nd, u});
+                    }
+                }
+            } else if (vis[u] == 1) {
+                vis[u] = 2;
+                if (p != -1) {
+                    size[p] += size[u];
+                }
+                if (size[u] % 2 == 0) {
+                    evens++;
+                }
+            }
+        }
+ 
+        System.out.println(evens > 0 ? evens - 1 : 0);
+    }
+}
