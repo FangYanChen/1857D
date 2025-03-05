@@ -1,0 +1,42 @@
+import sys
+import heapq
+ 
+def main():
+    n = int(sys.stdin.readline())
+    operations = []
+    heap = []
+    heapq.heapify(heap)
+    
+    for _ in range(n):
+        parts = sys.stdin.readline().split()
+        command = parts[0]
+        
+        if command == "insert":
+            val = int(parts[1])
+            heapq.heappush(heap, val)
+            operations.append(("insert", val))
+        elif command == "removeMin":
+            if heap:
+                heapq.heappop(heap)
+            else:
+                operations.append(("insert", 0))  
+            operations.append(("removeMin", None))
+        elif command == "getMin":
+            val = int(parts[1])
+            while heap and heap[0] < val:
+                heapq.heappop(heap)
+                operations.append(("removeMin", None))
+            if not heap or heap[0] > val:
+                heapq.heappush(heap, val)
+                operations.append(("insert", val))
+            operations.append(("getMin", val))
+    
+    print(len(operations))
+    for op in operations:
+        if op[0] == "removeMin":
+            print("removeMin")
+        else:
+            print(op[0], op[1])
+ 
+if __name__ == "__main__":
+    main()
